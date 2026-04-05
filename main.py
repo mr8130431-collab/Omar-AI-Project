@@ -8,7 +8,7 @@ st.set_page_config(page_title="Mg. Omar Saleh AI", page_icon="🎓", layout="wid
 # 2. ربط الذكاء الاصطناعي (حط مفتاحك هنا)
 # امسح الكلمة اللي بين القوسين وحط مفتاحك اللي بيبدأ بـ AIza
 genai.configure(api_key="AIzaSyC0E0SxmAws2daFLPAgVoZMJW0ClcpWEnU") 
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 # 3. إدارة الألوان والمهام
 if 'task' not in st.session_state: st.session_state.task = None
