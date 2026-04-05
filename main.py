@@ -1,126 +1,79 @@
 import streamlit as st
 
-# 1. إعدادات الصفحة الأساسية
-st.set_page_config(page_title="Mg. Omar Saleh", layout="wide")
+# إعدادات الصفحة
+st.set_page_config(page_title="Mg. Omar Saleh AI", page_icon="🎓", layout="wide")
 
-# 2. استدعاء المكتبات الخارجية والتنسيقات (CSS & HTML)
+# تنسيق واجهة المستخدم (CSS) لإخفاء الأكواد وتحسين الشكل
 st.markdown("""
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-    
-    html, body, [data-testid="stSidebar"], .stApp {
-        font-family: 'Cairo', sans-serif;
-        background-color: #0E1117;
-        color: #FFFFFF;
-        direction: rtl;
+    .main {
+        background-color: #0e1117;
     }
-
-    /* تصميم المربع والمكعب ذو الأطراف الدائرية للنقاط الأساسية */
-    .point-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-    .point-number {
-        background-color: #FF4B4B;
-        color: white;
-        padding: 5px 15px;
-        border-radius: 10px;
-        margin-left: 10px;
-        font-weight: bold;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-    }
-    .point-text {
-        background-color: #2E7D32;
-        color: white;
-        padding: 5px 20px;
-        border-radius: 10px;
-        flex-grow: 1;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-    }
-
-    /* تصميم الأزرار الستة */
-    .stButton > button {
+    .stButton>button {
         width: 100%;
-        border-radius: 12px;
+        border-radius: 10px;
         height: 3em;
-        background-color: #262730;
-        border: 1px solid #4B4B4B;
+        background-color: #4B4B4B;
+        color: white;
+        border: 1px solid #FFD700;
         transition: 0.3s;
     }
-    .stButton > button:hover {
-        border-color: #FFD700;
-        box-shadow: 0px 0px 10px #FFD700;
+    .stButton>button:hover {
+        background-color: #FFD700;
+        color: black;
+    }
+    h1 {
+        color: #FFD700;
+        text-align: center;
+        font-family: 'Arial';
+    }
+    .status-box {
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #4B4B4B;
+        margin-bottom: 10px;
     }
     </style>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_ Harris_true)
 
-# 3. العنوان الرئيسي
-st.markdown('<h1 style="text-align:center; color:#FFD700;">✨ Mg. Omar Saleh AI ✨</h1>', unsafe_allow_html=True)
+# العنوان الرئيسي
+st.markdown("<h1>✨ Mg. Omar Saleh AI ✨</h1>", unsafe_allow_html=True)
 
-# 4. شريط التحكم الجانبي (المواصفات المطلوبة في مكان لوحده)
-with st.sidebar:
-    st.header("⚙️ إعدادات العرض")
-    brightness = st.slider("🔅 درجة السطوع", 0.1, 1.0, 0.9)
-    frame_width = st.slider("📏 حجم عرض الإطار", 1, 10, 2)
-    page_count = st.number_input("📑 عدد الصفحات المستهدف", 1, 100, 1)
-    
-    st.write("---")
-    if st.button("🖼️ اختيار إطار زخرفي"):
-        st.info("الأطر المتاحة: (إطار كلاسيكي، إطار قانوني مذهب، إطار تعليمي حديث)")
+# تقسيم الصفحة لمدخلات منظمة
+col1, col2 = st.columns(2)
+with col1:
+    subject = st.text_input("📚 اسم المادة أو الكتاب")
+with col2:
+    topic = st.text_input("📝 اسم الموضوع")
 
-# 5. بيانات العمل المطلوب (المدخلات)
-st.markdown('### <i class="fas fa-edit"></i> بيانات العمل الإداري', unsafe_allow_html=True)
-col_a, col_b = st.columns(2)
-with col_a:
-    subject_name = st.text_input("📚 اسم المادة أو الكتاب")
-with col_b:
-    topic_name = st.text_input("🖋️ اسم الموضوع")
+# منطقة النص الخام
+raw_text = st.text_area("✒️ ضع النص هنا لتبدأ المعالجة...", height=200)
 
-raw_text = st.text_area("📄 النص الخام أو العشوائي", height=200, placeholder="ضع النص هنا...")
+st.markdown("---")
+st.subheader("🛠️ اختر نوع المهمة")
 
-# 6. توزيع الأزرار (المهام)
-st.write("---")
-st.markdown('### <i class="fas fa-tasks"></i> اختر نوع المهمة')
+# توزيع الأزرار بشكل احترافي
+btn_col1, btn_col2, btn_col3 = st.columns(3)
+with btn_col1:
+    if st.button("🪄 1. التنسيق (AI)"):
+        st.info("جاري تنسيق النص...")
+with btn_col2:
+    if st.button("📋 2. التلخيص (ترتيب)"):
+        st.warning("جاري التلخيص...")
+with btn_col3:
+    if st.button("📝 3-أ. اختبار ST"):
+        st.success("جاري إنشاء الاختبار...")
 
-c1, c2, c3, c4 = st.columns(4)
-with c1:
-    task_format = st.button("🪄 1. التنسيق (AI)")
-with c2:
-    task_summary = st.button("📝 2. التلخيص (ترتيب)")
-with c3:
-    task_st = st.button("🤖 3-أ. اختبار ST")
-with c4:
-    task_h = st.button("✍️ 3-ب. اختبار H")
+btn_col4, btn_col5, btn_col6 = st.columns(3)
+with btn_col4:
+    if st.button("🧐 3-ب. اختبار H"):
+        st.info("جاري إعداد الأسئلة...")
+with btn_col5:
+    if st.button("🖨️ 5. طباعة المحتوى"):
+        st.write("تم تجهيز النسخة للطباعة")
+with btn_col6:
+    if st.button("📊 4. الرسوم البيانية"):
+        st.error("هذه الميزة قيد التطوير")
 
-c5, c6 = st.columns(2)
-with c5:
-    task_graph = st.button("📊 4. الرسوم البيانية")
-with c6:
-    print_page = st.button("🖨️ 5. طباعة المحتوى")
-
-# 7. منطق التنفيذ (Logic)
-if task_summary:
-    st.markdown(f"## {topic_name}")
-    lines = raw_text.split('.') # تقسيم بسيط للنص
-    for i, line in enumerate(lines):
-        if line.strip():
-            st.markdown(f"""
-                <div class="point-container">
-                    <div class="point-number">{i+1}</div>
-                    <div class="point-text">{line.strip()}</div>
-                </div>
-            """, unsafe_allow_html=True)
-
-if task_h:
-    st.markdown("### ✍️ اختبار يدوي (H) بناءً على النص")
-    st.write("1. (صح/خطأ): هل النص يتناول موضوع السيادة؟")
-    st.write("2. (اختياري): ما هو الركن الأساسي المذكور؟")
-    st.write("3. (مقال): اشرح بالتفصيل وجهة نظر الكاتب في النص.")
-
-if print_page:
-    st.warning("اضغط Ctrl + P من لوحة المفاتيح لبدء الطباعة الفورية.")
-
-# تذييل الصفحة
-st.markdown("<br><hr><p style='text-align:center;'>حقوق الملكية © Mg. Omar Saleh | 2026</p>", unsafe_allow_html=True)
+st.markdown("---")
+st.caption("حقوق الملكية © 2026 | Mg. Omar Saleh")
