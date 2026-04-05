@@ -1,71 +1,84 @@
 import streamlit as st
+import time
+import google.generativeai as genai
 
-# إعدادات الصفحة
+# 1. إعدادات الصفحة
 st.set_page_config(page_title="Mg. Omar Saleh AI", page_icon="🎓", layout="wide")
 
-# تنسيق واجهة المستخدم (CSS)
-st.markdown("""
+# 2. ربط الذكاء الاصطناعي (حط مفتاحك هنا)
+# امسح الكلمة اللي بين القوسين وحط مفتاحك اللي بيبدأ بـ AIza
+genai.configure(api_key="AIzaSyC0E0SxmAws2daFLPAgVoZMJW0ClcpWEnU") 
+model = genai.GenerativeModel('gemini-pro')
+
+# 3. إدارة الألوان والمهام
+if 'task' not in st.session_state: st.session_state.task = None
+if 'f_color' not in st.session_state: st.session_state.f_color = "#FFD700"
+
+# تصميم احترافي
+st.markdown(f"""
     <style>
-    .main {
-        background-color: #0e1117;
-    }
-    .stButton>button {
-        width: 100%;
-        border-radius: 12px;
-        height: 3.5em;
-        background-color: #262730;
-        color: white;
-        border: 1px solid #FFD700;
-        font-weight: bold;
-    }
-    .stButton>button:hover {
-        background-color: #FFD700;
-        color: black;
-    }
-    h1 {
-        color: #FFD700;
-        text-align: center;
-    }
+    .main {{ background-color: #0e1117; }}
+    h1 {{ color: {st.session_state.f_color}; text-align: center; border: 2px solid {st.session_state.f_color}; padding: 10px; border-radius: 15px; }}
+    .stButton>button {{ width: 100%; border-radius: 10px; font-weight: bold; transition: 0.3s; height: 3em; }}
     </style>
     """, unsafe_allow_html=True)
 
-# العنوان الرئيسي
 st.markdown("<h1>✨ Mg. Omar Saleh AI ✨</h1>", unsafe_allow_html=True)
 
-# ترتيب المدخلات
-col1, col2 = st.columns(2)
-with col1:
-    subject = st.text_input("📚 اسم المادة أو الكتاب")
-with col2:
-    topic = st.text_input("📝 اسم الموضوع")
-
-raw_text = st.text_area("✒️ ضع النص هنا لتبدأ المعالجة...", height=200)
+# 4. المدخلات
+c_a, c_b = st.columns(2)
+with c_a: sub = st.text_input("📚 المادة")
+with c_b: top = st.text_input("📝 الموضوع")
+txt = st.text_area("✒️ النص القانوني:", height=150)
 
 st.markdown("---")
-st.subheader("🛠️ اختر نوع المهمة")
 
-# توزيع الأزرار بشكل منتظم
-c1, c2, c3 = st.columns(3)
-with c1:
-    if st.button("🪄 1. التنسيق (AI)"):
-        st.info("جاري التنسيق...")
-with c2:
-    if st.button("📋 2. التلخيص (ترتيب)"):
-        st.warning("جاري التلخيص...")
-with c3:
-    if st.button("📝 3-أ. اختبار ST"):
-        st.success("جاري إنشاء الاختبار...")
+# 5. أزرار المهام (5 أزرار)
+st.subheader("🛠️ المهام")
+t1, t2, t3, t4, t5 = st.columns(5)
+with t1: 
+    if st.button("🪄 تنسيق"): st.session_state.task = "format"
+with t2: 
+    if st.button("📋 تلخيص"): st.session_state.task = "summary"
+with t3: 
+    if st.button("📝 اختبار ST"): st.session_state.task = "test1"
+with t4: 
+    if st.button("🧐 اختبار H"): st.session_state.task = "test2"
+with t5: 
+    if st.button("🖨️ طباعة"): st.session_state.task = "print"
 
-c4, c5, c6 = st.columns(3)
-with c4:
-    if st.button("🧐 3-ب. اختبار H"):
-        st.info("جاري إعداد الأسئلة...")
-with c5:
-    if st.button("🖨️ 5. طباعة المحتوى"):
-        st.write("تم التجهيز للطباعة")
-with c6:
-    if st.button("📊 4. الرسوم البيانية"):
-        st.error("ميزة قيد التطوير")
+# 6. أزرار الألوان (5 أزرار)
+st.subheader("🎨 الألوان")
+l1, l2, l3, l4, l5 = st.columns(5)
+with l1: 
+    if st.button("🟡 ذهبي"): st.session_state.f_color = "#FFD700"
+with l2: 
+    if st.button("🔵 أزرق"): st.session_state.f_color = "#3498db"
+with l3: 
+    if st.button("🟢 أخضر"): st.session_state.f_color = "#2ecc71"
+with l4: 
+    if st.button("🔴 أحمر"): st.session_state.f_color = "#e74c3c"
+with l5: 
+    if st.button("⚪ افتراضي"): st.session_state.f_color = "#FFFFFF"
 
 st.markdown("---")
-st.caption("حقوق الملكية © 2026 | Mg. Omar Saleh")
+
+# 7. زر بدء العمل
+if st.button("🚀 بدء العمل الآن"):
+    if not st.session_state.task:
+        st.error("اختار مهمة الأول!")
+    elif not txt:
+        st.warning("دخل نص الأول!")
+    else:
+        start = time.time()
+        with st.spinner("جاري التنفيذ..."):
+            if st.session_state.task == "format":
+                res = model.generate_content(f"نسق النص ده: {txt}")
+                st.info(res.text)
+            elif st.session_state.task == "summary":
+                res = model.generate_content(f"لخص النص ده: {txt}")
+                st.warning(res.text)
+            elif st.session_state.task == "print":
+                st.code(txt)
+            # باقي المهام تعمل بنفس الطريقة
+        st.caption(f"تم في {round(time.time()-start, 2)} ثانية")
