@@ -1,2 +1,4 @@
-streamlit 8.6
+streamlit
+google-generativeai
+
 
